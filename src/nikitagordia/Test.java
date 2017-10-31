@@ -8,14 +8,27 @@ public class Test {
     private int n, ok;
     private ArrayList<Pair> wrong;
 
-    public Test(ArrayList<Pair> arr) {
-        n = arr.size();
+    public Test(ArrayList<Pair> arr, int lim) {
+        if (lim == -1) n = arr.size(); else n = lim;
         ok = 0;
+        wrong = new ArrayList<>();
         start = System.currentTimeMillis();
-        for (int i = 0; i < arr.size(); i++)
-            checkPair(arr.get(i), i);
-        for (int i = 0; i < arr.size(); i++)
-            System.out.println("!" + arr.get(i).eng + " " + arr.get(i).rus);
+        for (int i = 0; i < n; i++)
+            checkPair(arr.get(i % arr.size()), i);
+        statistics();
+    }
+
+    private void statistics() {
+        Main.lgn("------------------------------\\(*_*)/--------------------------------------");
+        Main.lgn("--------| Time : " + ((int)(System.currentTimeMillis() - start) / 1000) + "s");
+        Main.lgn("--------| Correct : " + ok);
+        Main.lgn("--------| Incorrect : " + (n - ok));
+        Main.lgn("--------| Statisctics : " + (((double)ok / n) * 100) + "%");
+        Main.lgn("");
+        for (Pair p : wrong) {
+            Main.lgn("----! " + p.eng + "  ->   " + p.rus);
+        }
+        Main.lgn("");
     }
 
     private void checkPair(Pair p, int id) {
@@ -25,8 +38,7 @@ public class Test {
         Main.in.getLine();
         Main.lg("--------| " + p.rus + "   [Answer] : ");
         String s = Main.in.getLine();
-        if (s.equals("exit")) System.exit(0);
-        if (s.indexOf(s) != -1) ok++; else wrong.add(p);
-        Main.lgn("");
+        if (s.indexOf("+") != -1) ok++; else wrong.add(p);
+        Main.lgn("\n");
     }
 }

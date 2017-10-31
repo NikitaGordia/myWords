@@ -19,6 +19,7 @@ public class conReader {
         } catch (IOException e) {
             Main.crash("Input error!");
         }
+        if (str.equals("exit")) System.exit(0);
         return str;
     }
 }

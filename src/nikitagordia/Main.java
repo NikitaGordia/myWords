@@ -9,12 +9,14 @@ public class Main {
     public static conReader in;
     private static ArrayList<ArrayList<Pair> > list;
     private static int allWords;
+    private static Random r;
 
     public static void main(String[] args) {
         /*if (args.length != 1) {
             lg("Wong quantity of arguments...");
             return;
         }*/
+        r = new Random();
         file = new qReader("/home/nikita-gordia/Space/Workspace/Eng/Word");
         in = new conReader();
         list = qReader.getLessons();
@@ -26,47 +28,50 @@ public class Main {
         lgn("myWords.1.0");
         lgn("Type 'exit' to return from program. Quantity of lessons : " + list.size() + ". Quantity of words : " + allWords);
         while (true) {
-            lgn("\tPlease type the mode : ");
+            lgn("-----> Please type the mode : ");
             lgn("\t\t'1' -> Check all words");
             lgn("\t\t'2' -> Check last n recording");
             lg("\t\t\tYou: ");
             String ln = in.getLine();
             switch (ln) {
-                case "exit":
-                    System.exit(0);
+                case "1": readyWords(list.size(), getInputNum("Quantity of words : ", true));
                     break;
-                case "1": readyTest(list.size());
-                    break;
-                case "2": checkNRecording();
+                case "2": readyWords(getInputNum("Quantity of lessons : ", false), -1);
                     break;
             }
         }
     }
 
-    private static void checkNRecording() {
+    private static int getInputNum(String mess, boolean all) {
         String ans;
         int x;
         while (true) {
-            lg("Number of recording : ");
+            lg(mess);
             ans = in.getLine();
-            if (ans.equals("exit")) System.exit(0);
             try {
                 x = Integer.parseInt(ans);
-                if (x < 1 || x > list.size()) throw new NumberFormatException("");
+                if (!all) {
+                    if (x < 1 || x > list.size()) throw new NumberFormatException("");
+                }
                 break;
             } catch (NumberFormatException e) {
                 lgn("Wrong number!");
             }
         }
-        readyTest(x);
+        return x;
     }
 
-    private static void readyTest(int n) {
+
+
+    private static void readyWords(int n, int cnt) {
         ArrayList<Pair> res = new ArrayList<>();
         for (int i = list.size() - n; i < list.size(); i++)
             for (Pair x : list.get(i))
                 res.add(x.getClone());
-        Random r = new Random();
+        goTest(res, cnt);
+    }
+
+    private static void goTest(ArrayList<Pair> res, int cnt) {
         for (int i = 0; i < res.size() * 100; i++) {
             int x = r.nextInt(res.size()), y = r.nextInt(res.size());
             Pair temp = res.get(x);
@@ -75,7 +80,7 @@ public class Main {
         }
         for (Pair p : res)
             if (r.nextBoolean()) p.swap();
-        new Test(res);
+        new Test(res, cnt);
     }
 
     private static void countAllWords() {

@@ -16,6 +16,6 @@ public class Pair {
     public void swap() {
         String temp = eng;
         eng = rus;
-        rus = eng;
+        rus = temp;
     }
 }
