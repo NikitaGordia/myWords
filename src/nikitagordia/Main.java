@@ -12,12 +12,12 @@ public class Main {
     private static Random r;
 
     public static void main(String[] args) {
-        /*if (args.length != 1) {
+        if (args.length != 1) {
             lg("Wong quantity of arguments...");
             return;
-        }*/
+        }
         r = new Random();
-        file = new qReader("/home/nikita-gordia/Space/Workspace/Eng/Word");
+        file = new qReader(args[0]);
         in = new conReader();
         list = qReader.getLessons();
         countAllWords();
